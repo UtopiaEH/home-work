@@ -164,7 +164,7 @@ function solveSkyscraper(clues: Clues): Solutions {
     }
 
     const solutions: Solutions = Array(4).fill([]).map(() => Array(4).fill(0));
-    
+
     for (let i = 0; i < 4; i++) {
         for (let j = 0; j < 4; j++) {
             solutions[i][j] = parseInt(listOfSolutions[i][j]);
