@@ -1,20 +1,24 @@
-
 /*
-* Reffrence: https://www.conceptispuzzles.com/index.aspx?uri=puzzle/skyscrapers/techniques
-*
-* Online check: https://www.noq.solutions/skyscrapers
-*
-*  */
+ * Reffrence: https://www.conceptispuzzles.com/index.aspx?uri=puzzle/skyscrapers/techniques
+ *
+ * Online check: https://www.noq.solutions/skyscrapers
+ *
+ *  */
 
 type Clues = number[];
 type Solutions = number[][];
 
-// Function to get the ascending visibility factor
-function getAsc(str: string): number {
-    const a = parseInt(str[0]);
-    const b = parseInt(str[1]);
-    const c = parseInt(str[2]);
-    const d = parseInt(str[3]);
+
+type TParsedNumber = {
+    a: number,
+    b: number,
+    c: number,
+    d: number
+}
+
+
+function getSortedNumber(str: string, parsedNumber: TParsedNumber): number {
+    const {a, b, c, d} = parsedNumber;
 
     if (a === b || a === c || a === d || b === c || b === d || c === d) return 9;
     if (a < b && b < c && c < d) return 4;
@@ -22,6 +26,7 @@ function getAsc(str: string): number {
 
     let counter = 1;
     let top = a;
+
 
     if (b > top) {
         counter++;
@@ -38,33 +43,30 @@ function getAsc(str: string): number {
     return counter;
 }
 
+// Function to get the ascending visibility factor
+function getAsc(str: string): number {
+
+    const parsedNumber = {
+        a: parseInt(str[0]),
+        b: parseInt(str[1]),
+        c: parseInt(str[2]),
+        d: parseInt(str[3])
+    }
+
+    return getSortedNumber(str, parsedNumber);
+}
+
 // Function to get the descending visibility factor
 function getDesc(str: string): number {
-    const a = parseInt(str[3]);
-    const b = parseInt(str[2]);
-    const c = parseInt(str[1]);
-    const d = parseInt(str[0]);
 
-    if (a === b || a === c || a === d || b === c || b === d || c === d) return 9;
-    if (a < b && b < c && c < d) return 4;
-    if (a === 4) return 1;
-
-    let counter = 1;
-    let top = a;
-
-    if (b > top) {
-        counter++;
-        top = b;
-    }
-    if (c > top) {
-        counter++;
-        top = c;
-    }
-    if (d > top) {
-        counter++;
+    const parsedNumber = {
+        a: parseInt(str[3]),
+        b: parseInt(str[2]),
+        c: parseInt(str[1]),
+        d: parseInt(str[0])
     }
 
-    return counter;
+    return getSortedNumber(str, parsedNumber);
 }
 
 function solveSkyscraper(clues: Clues): Solutions {
@@ -161,8 +163,8 @@ function solveSkyscraper(clues: Clues): Solutions {
         }
     }
 
-    // Convert the solution to the matrix form
     const solutions: Solutions = Array(4).fill([]).map(() => Array(4).fill(0));
+    
     for (let i = 0; i < 4; i++) {
         for (let j = 0; j < 4; j++) {
             solutions[i][j] = parseInt(listOfSolutions[i][j]);
@@ -172,7 +174,6 @@ function solveSkyscraper(clues: Clues): Solutions {
     return solutions;
 }
 
-// Example usage
 const clues: Clues = [0, 0, 1, 2, 0, 2, 0, 0, 0, 3, 0, 0, 0, 1, 0, 0];
 const solution = solveSkyscraper(clues);
 console.table(solution);
